@@ -1,0 +1,684 @@
+[
+  {
+    "name": "100% Treasury Money Market Fund",
+    "accountingId": "WBC0",
+    "assetClasses": [
+      "government",
+      "money-market"
+    ]
+  },
+  {
+    "name": "Absolute Return Fund",
+    "accountingId": "WBBJ",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Adjustable Rate Government Fund",
+    "accountingId": "4252",
+    "assetClasses": [
+      "fixed-income",
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Alternative Risk Premia Fund",
+    "accountingId": "WBRK",
+    "assetClasses": [
+      "alternative"
+    ]
+  },
+  {
+    "name": "Asset Allocation Fund",
+    "accountingId": "2LK6",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "C&B Large Cap Value Fund",
+    "accountingId": "WBHI",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-value"
+    ]
+  },
+  {
+    "name": "C&B Mid Cap Value Fund",
+    "accountingId": "WBA2",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-value"
+    ]
+  },
+  {
+    "name": "California Limited-Term Tax-Free Fund",
+    "accountingId": "WBAG",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "California Tax-Free Fund",
+    "accountingId": "WBAH",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Common Stock Fund",
+    "accountingId": "WBA3",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-blend"
+    ]
+  },
+  {
+    "name": "Conservative Income Fund",
+    "accountingId": "WBDJ",
+    "assetClasses": [
+      "fixed-income",
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Core Bond Fund",
+    "accountingId": "WBH9",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Core Plus Bond Fund",
+    "accountingId": "WBB4",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Disciplined Small Cap Fund",
+    "accountingId": "WBA6",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-blend"
+    ]
+  },
+  {
+    "name": "Disciplined U.S. Core Fund",
+    "accountingId": "2L75",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-blend"
+    ]
+  },
+  {
+    "name": "Discovery All Cap Growth Fund",
+    "accountingId": "4287",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Discovery Large Cap Growth Fund",
+    "accountingId": "WBAS",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Discovery Mid Cap Growth Fund",
+    "accountingId": "WBA9",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Discovery SMID Cap Growth Fund",
+    "accountingId": "WBA8",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Discovery Small Cap Growth Fund",
+    "accountingId": "2LD1",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Diversified Capital Builder Fund",
+    "accountingId": "424C",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Diversified Income Builder Fund",
+    "accountingId": "422K",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2015 Fund",
+    "accountingId": "WBIB",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2020 Fund",
+    "accountingId": "WBID",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2025 Fund",
+    "accountingId": "WBIE",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2030 Fund",
+    "accountingId": "WBIF",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2035 Fund",
+    "accountingId": "WBIG",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2040 Fund",
+    "accountingId": "WBIH",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2045 Fund",
+    "accountingId": "WBIJ",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2050 Fund",
+    "accountingId": "WBIL",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2055 Fund",
+    "accountingId": "WBIM",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target 2060 Fund",
+    "accountingId": "WBIN",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Dynamic Target Today Fund",
+    "accountingId": "WBIA",
+    "assetClasses": [
+      "target-date-retirement"
+    ]
+  },
+  {
+    "name": "Emerging Growth Fund",
+    "accountingId": "WBHM",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Emerging Markets Equity Fund",
+    "accountingId": "RKB7",
+    "assetClasses": [
+      "international-global-equity"
+    ]
+  },
+  {
+    "name": "Emerging Markets Equity Income Fund",
+    "accountingId": "WBDI",
+    "assetClasses": [
+      "international-global-equity"
+    ]
+  },
+  {
+    "name": "Global Dividend Opportunity Fund",
+    "accountingId": "2LSC",
+    "assetClasses": []
+  },
+  {
+    "name": "Global Investment Grade Credit Fund",
+    "accountingId": "WBSK",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Government Money Market Fund",
+    "accountingId": "WBC4",
+    "assetClasses": [
+      "government",
+      "money-market"
+    ]
+  },
+  {
+    "name": "Government Securities Fund",
+    "accountingId": "WBB2",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Growth Balanced Fund",
+    "accountingId": "WBHF",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Growth Fund",
+    "accountingId": "WBAU",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Heritage Money Market Fund",
+    "accountingId": "WBC5",
+    "assetClasses": [
+      "money-market",
+      "prime-institutional"
+    ]
+  },
+  {
+    "name": "High Yield Bond Fund",
+    "accountingId": "4203",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "High Yield Municipal Bond Fund",
+    "accountingId": "WBBM",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Income Opportunities Fund",
+    "accountingId": "2LK9",
+    "assetClasses": [
+      "specialty"
+    ]
+  },
+  {
+    "name": "Income Plus Fund",
+    "accountingId": "WBBK",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Index Asset Allocation Fund",
+    "accountingId": "WBHZ",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Index Fund",
+    "accountingId": "WBHR",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-blend"
+    ]
+  },
+  {
+    "name": "Intermediate Tax AMT-Free Fund",
+    "accountingId": "WBAL",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "International Bond Fund",
+    "accountingId": "2L78",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "International Equity Fund",
+    "accountingId": "WBDH",
+    "assetClasses": [
+      "international-global-equity"
+    ]
+  },
+  {
+    "name": "Large Cap Core Fund",
+    "accountingId": "2LS8",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-blend"
+    ]
+  },
+  {
+    "name": "Large Cap Growth Fund",
+    "accountingId": "WBAV",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Large Company Value Fund",
+    "accountingId": "WBAX",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-value"
+    ]
+  },
+  {
+    "name": "Minnesota Tax-Free Fund",
+    "accountingId": "WBAJ",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Moderate Balanced Fund",
+    "accountingId": "WBHG",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Money Market Fund",
+    "accountingId": "WBC7",
+    "assetClasses": [
+      "money-market"
+    ]
+  },
+  {
+    "name": "Multi-Sector Income Fund",
+    "accountingId": "2LKC",
+    "assetClasses": [
+      "specialty"
+    ]
+  },
+  {
+    "name": "Municipal Bond Fund",
+    "accountingId": "WBAM",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Municipal Cash Management Money Market Fund",
+    "accountingId": "2L47",
+    "assetClasses": [
+      "money-market",
+      "municipal-institutional"
+    ]
+  },
+  {
+    "name": "Municipal Sustainability Fund",
+    "accountingId": "WBMF",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "National Tax-Free Money Market Fund",
+    "accountingId": "WBCA",
+    "assetClasses": [
+      "money-market"
+    ]
+  },
+  {
+    "name": "Opportunity Fund",
+    "accountingId": "WBAD",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-blend"
+    ]
+  },
+  {
+    "name": "Pennsylvania Tax-Free Fund",
+    "accountingId": "4277",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Precious Metals Fund",
+    "accountingId": "4290",
+    "assetClasses": [
+      "specialty"
+    ]
+  },
+  {
+    "name": "Premier Large Company Growth Fund",
+    "accountingId": "4205",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Real Return Fund",
+    "accountingId": "WBH7",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Short Duration Government Bond Fund",
+    "accountingId": "WBB5",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Short-Term Bond Plus Fund",
+    "accountingId": "WBB6",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Short-Term High Yield Bond Fund",
+    "accountingId": "WBB7",
+    "assetClasses": [
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Short-Term Municipal Bond Fund",
+    "accountingId": "WBAN",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Small Cap Fund",
+    "accountingId": "WBAE",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-blend"
+    ]
+  },
+  {
+    "name": "Small Company Growth Fund",
+    "accountingId": "WBHW",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-growth"
+    ]
+  },
+  {
+    "name": "Small Company Value Fund",
+    "accountingId": "WBHX",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-value"
+    ]
+  },
+  {
+    "name": "Special Global Small Cap Fund",
+    "accountingId": "422C",
+    "assetClasses": [
+      "international-global-equity"
+    ]
+  },
+  {
+    "name": "Special International Small Cap Fund",
+    "accountingId": "WBME",
+    "assetClasses": [
+      "international-global-equity"
+    ]
+  },
+  {
+    "name": "Special Large Cap Value Fund",
+    "accountingId": "2LR5",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-value"
+    ]
+  },
+  {
+    "name": "Special Mid Cap Value Fund",
+    "accountingId": "WBAB",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-value"
+    ]
+  },
+  {
+    "name": "Special Small Cap Value Fund",
+    "accountingId": "Y619",
+    "assetClasses": [
+      "us-equity",
+      "us-equity-value"
+    ]
+  },
+  {
+    "name": "Specialized Technology Fund",
+    "accountingId": "WBA1",
+    "assetClasses": [
+      "specialty"
+    ]
+  },
+  {
+    "name": "Spectrum Aggressive Growth Fund",
+    "accountingId": "WBH5",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Spectrum Conservative Growth Fund",
+    "accountingId": "WBH4",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Spectrum Growth Fund",
+    "accountingId": "WBH2",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Spectrum Income Allocation Fund",
+    "accountingId": "WBH0",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Spectrum Moderate Growth Fund",
+    "accountingId": "WBH3",
+    "assetClasses": [
+      "multi-asset"
+    ]
+  },
+  {
+    "name": "Strategic Municipal Bond Fund",
+    "accountingId": "2LH1",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Treasury Plus Money Market Fund",
+    "accountingId": "WBCF",
+    "assetClasses": [
+      "government",
+      "money-market"
+    ]
+  },
+  {
+    "name": "Ultra Short-Term Income Fund",
+    "accountingId": "WBB9",
+    "assetClasses": [
+      "fixed-income",
+      "taxable-fixed-income"
+    ]
+  },
+  {
+    "name": "Ultra Short-Term Municipal Income Fund",
+    "accountingId": "WBAQ",
+    "assetClasses": [
+      "fixed-income",
+      "municipal-fixed-income"
+    ]
+  },
+  {
+    "name": "Utilities and High Income Fund",
+    "accountingId": "2LQC",
+    "assetClasses": [
+      "specialty"
+    ]
+  },
+  {
+    "name": "Utility and Telecommunications Fund",
+    "accountingId": "RKB5",
+    "assetClasses": [
+      "specialty"
+    ]
+  },
+  {
+    "name": "Wisconsin Tax-Free Fund",
+    "accountingId": "WBAP",
+    "assetClasses": [
+      "municipal-fixed-income"
+    ]
+  }
+]

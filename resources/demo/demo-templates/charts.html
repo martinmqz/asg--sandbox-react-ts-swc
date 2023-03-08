@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ASG Charts</title>
+    <style>
+      #container {
+        width: 750px;
+        counter-reset: chart-type;
+      }
+      #container > div > div {
+        border: 1px solid #f2f2f2;
+      }
+      h1 {
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 0;
+        counter-increment: chart-type;
+      }
+      h2::before {
+        content: counter(chart-type) ". ";
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

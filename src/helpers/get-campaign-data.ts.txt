@@ -1,0 +1,6 @@
+import ICampaignData from '../components/Campaigns/Campaign2023Outlook/ICampaignData'
+import campaign2023OutlookData from '../data/campaign2023OutlookData'
+
+export default function getCampaignData ():ICampaignData {
+  return campaign2023OutlookData
+}

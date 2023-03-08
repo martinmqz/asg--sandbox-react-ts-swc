@@ -1,0 +1,780 @@
+import React from 'react'
+import endpoints from '../../config/endpoints'
+import get from 'lodash-es/get'
+import assign from 'lodash-es/assign'
+import findIndex from 'lodash-es/findIndex'
+import format from 'date-fns/format'
+import find from 'lodash-es/find'
+import parseISO from 'date-fns/parseISO'
+import config from '../../config'
+import helpers from '../../helpers'
+
+interface IProps {
+  id: string
+}
+const _shareClassesLookup = config.HARDCODED_LOOKUPS.shareClassesObj
+const _currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0
+})
+const _twoDecimalFormatter = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+})
+const _nineDecimalFormatter = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  minimumFractionDigits: 9,
+  maximumFractionDigits: 9
+})
+const _tableTypes = {
+  // wells-fargo-corporate-trust-services.html
+  'corporate-trust-services': [
+    'shareClassName',
+    'taNumber',
+    'cusip',
+    'sevenDayCurrentYield',
+    'sevenDayEffectiveYield',
+    'thirtyDayCurrentYield',
+    'thirtyDayEffectiveYield',
+    'weightedAverageMaturity',
+    'grossExpenseRatio',
+    'netExpenseRatio',
+    'tradingDeadlines',
+    'factSheet'
+  ],
+  // government-and-institutional-banking.html
+  gib: [
+    'shareClassName',
+    'taNumber',
+    'cusip',
+    'sevenDayCurrentYield',
+    'sevenDayPreWaiverYield',
+    'sevenDayEffectiveYield',
+    'thirtyDayCurrentYield',
+    'thirtyDayEffectiveYield',
+    'weightedAverageMaturity',
+    'grossExpenseRatio',
+    'netExpenseRatio',
+    'tradingDeadlines',
+    'factSheet'
+  ],
+  // at-a-glance.html, at-a-glance-institutional.html
+  'at-a-glance': [
+    'shareClassName',
+    'taNumber',
+    'ticker',
+    'dailyFactor',
+    'oneDayYield',
+    'sevenDayCurrentYield',
+    'sevenDayPreWaiverYield',
+    'sevenDayEffectiveYield',
+    'thirtyDayCurrentYield',
+    'thirtyDayEffectiveYield',
+    'weightedAverageMaturity',
+    'minInitialInvestment',
+    'factSheet'
+  ],
+  // ultra-short.html
+  'rate-sheet': [
+    'taNumber',
+    'ticker',
+    'dailyFactor',
+    'dailyNAV', //
+    'averageEffectiveDuration', //
+    'oneDayYield',
+    'sevenDayCurrentYield',
+    'thirtyDaySECYield', //
+    'thirtyDayCurrentYield',
+    'thirtyDayEffectiveYield',
+    'monthlyOneYearCumulative',
+    'monthlyFiveYearAnnualized',
+    'monthlyTenYearAnnualized',
+    'monthlySinceInception',
+    'factSheet'
+  ],
+  // stagecoach-sweep.html
+  'stagecoach-sweep': [
+    'fundClassName',
+    'dailyFactor',
+    'oneDayYield',
+    'sevenDayCurrentYield',
+    'sevenDayPreWaiverYield',
+    'sevenDayEffectiveYield',
+    'factSheet',
+    'summaryProspectus',
+    'prospectus',
+    'annualReport'
+  ]
+}
+const _tableTypeByPageId = {
+  'wells-fargo-corporate-trust-services': 'corporate-trust-services',
+  'government-and-institutional-banking': 'gib',
+  'at-a-glance': 'at-a-glance',
+  'at-a-glance-institutional': 'at-a-glance',
+  'ultra-short': 'rate-sheet',
+  'stagecoach-sweep': 'stagecoach-sweep'
+}
+/*
+interface ICell {
+  label:string
+  width?:number
+}
+interface IColumn {
+  [index:string]:ICell
+  annualReport:ICell
+  cusip:ICell
+  dailyFactor:ICell
+  factSheet:ICell
+  fundClassName:ICell
+  grossExpenseRatio:ICell
+  minInitialInvestment:ICell
+  netExpenseRatio:ICell
+  netFundAssets:ICell
+  oneDayYield:ICell
+  prospectus:ICell
+  sevenDayCurrentYield:ICell
+  sevenDayEffectiveYield:ICell
+  sevenDayPreWaiverYield:ICell
+  shareClassName:ICell
+  summaryProspectus:ICell
+  taNumber:ICell
+  thirtyDayCurrentYield:ICell
+  thirtyDayEffectiveYield:ICell
+  thirtyDaySECYield:ICell
+  ticker:ICell
+  tradingDeadlines:ICell
+  weightedAverageMaturity:ICell
+  dailyNAV:ICell
+  averageEffectiveDuration:ICell
+  // Returns
+  monthlyOneYearCumulative:ICell
+  monthlyFiveYearAnnualized:ICell
+  monthlyTenYearAnnualized:ICell
+  monthlySinceInception:ICell
+}
+const _columns = { // :IColumn = {
+  annualReport: {
+    label: 'Annual report',
+    width: 5
+  },
+  cusip: {
+    label: 'CUSIP'
+  },
+  dailyFactor: {
+    label: 'Daily factor',
+    width: 10
+  },
+  factSheet: {
+    label: 'Fact sheet',
+    width: 5
+  },
+  fundClassName: {
+    label: 'Fund',
+    width: 30
+  },
+  grossExpenseRatio: {
+    label: 'Gross expense ratio (%)',
+    width: 10
+  },
+  minInitialInvestment: {
+    label: 'Minimum initial investment'
+  },
+  netExpenseRatio: {
+    label: 'Net expense ratio (%)',
+    width: 10
+  },
+  netFundAssets: {
+    label: 'Net fund assets'
+  },
+  oneDayYield: {
+    label: '1-day (%)',
+    width: 10
+  },
+  prospectus: {
+    label: 'Prospectus',
+    width: 5
+  },
+  sevenDayCurrentYield: {
+    label: '7-day current (%)',
+    width: 10
+  },
+  sevenDayEffectiveYield: {
+    label: '7-day effective (%)',
+    width: 10
+  },
+  sevenDayPreWaiverYield: {
+    label: '7-day current pre-waiver (%)',
+    width: 10
+  },
+  shareClassName: {
+    label: 'Share class'
+  },
+  summaryProspectus: {
+    label: 'Summary prospectus',
+    width: 5
+  },
+  taNumber: {
+    label: 'Fund #'
+  },
+  thirtyDayCurrentYield: {
+    label: '30-day current (%)',
+    width: 10
+  },
+  thirtyDayEffectiveYield: {
+    label: '30-day effective (%)',
+    width: 10
+  },
+  thirtyDaySECYield: {
+    label: '30-day SEC yield (%)',
+    width: 10
+  },
+  ticker: {
+    label: 'Ticker'
+  },
+  tradingDeadlines: {
+    label: 'Trading deadline(s) (All Times ET)',
+    width: 25
+  },
+  weightedAverageMaturity: {
+    label: 'Weighted average maturity'
+  },
+  dailyNAV: {
+    label: 'NAV',
+    width: 5
+  },
+  averageEffectiveDuration: {
+    label: 'Effective duration'
+  },
+  // Returns
+  monthlyOneYearCumulative: {
+    label: '1 yr.'
+  },
+  monthlyFiveYearAnnualized: {
+    label: '5 yr.'
+  },
+  monthlyTenYearAnnualized: {
+    label: '10yr.'
+  },
+  monthlySinceInception: {
+    label: 'Incept.'
+  }
+}
+interface IRawSectionRow {
+  fund:object
+  shareClass:string
+  customTradingDeadlines:string[]
+  documents:object[]
+}
+interface ISectionRow extends Omit<IRawSectionRow, 'shareClass'> {
+  // [key:string|number]:string
+  fundClassName:string
+  shareClassId:string
+  shareClassName:string
+  taNumber:string
+  cusip:string
+  ticker:string
+  tradingDeadlines:string
+  // documents:object[]
+}
+interface IRawSectionTable {
+  type:string
+  caption:string
+  rows:IRawSectionRow[]
+}
+interface ISectionTable extends Omit<IRawSectionTable, 'rows'> {
+  fundClassName:string
+  shareClassId:string
+  shareClassName:string
+  taNumber:number
+  cusip:string
+  ticker:string
+  tradingDeadlines:string
+  summary:string
+  rows: ISectionRow[]
+  documents:object[]
+}
+interface IRawSection {
+  title:string
+  description:string
+  tables:IRawSectionTable[]
+}
+interface ISection extends Omit<IRawSection, 'tables'> {
+tables:any/* :ISectionTable * /[]
+}
+
+interface IYieldDataItem {
+  fundName: string
+  weightedAverageMaturityStr: string
+  netFundAssetsStr: string
+  dailyFactorStr: string
+  oneDayYieldStr: string
+  sevenDayCurrentYieldStr: string
+  sevenDayPreWaiverYieldStr: string
+  sevenDayEffectiveYieldStr: string
+  thirtyDayCurrentYieldStr: string
+  thirtyDayEffectiveYieldStr: string
+  thirtyDaySECYieldStr: string
+  minInitialInvestmentStr: string
+  grossExpenseRatioStr: string
+  netExpenseRatioStr: string
+  averageEffectiveDurationStr: string
+  dailyNAVStr: string
+  monthlyOneYearCumulativeStr: string
+  monthlyFiveYearAnnualizedStr: string
+  monthlyTenYearAnnualizedStr: string
+  monthlySinceInceptionStr: string
+}
+interface IRawYieldDataItem extends ISectionRow, IYieldDataItem { }
+*/
+// const c = 0
+const _columns = {
+  annualReport: {
+    label: 'Annual report',
+    width: 5
+  },
+  cusip: {
+    label: 'CUSIP'
+  },
+  dailyFactor: {
+    label: 'Daily factor',
+    width: 10
+  },
+  factSheet: {
+    label: 'Fact sheet',
+    width: 5
+  },
+  fundClassName: {
+    label: 'Fund',
+    width: 30
+  },
+  grossExpenseRatio: {
+    label: 'Gross expense ratio (%)',
+    width: 10
+  },
+  minInitialInvestment: {
+    label: 'Minimum initial investment'
+  },
+  netExpenseRatio: {
+    label: 'Net expense ratio (%)',
+    width: 10
+  },
+  netFundAssets: {
+    label: 'Net fund assets'
+  },
+  oneDayYield: {
+    label: '1-day (%)',
+    width: 10
+  },
+  prospectus: {
+    label: 'Prospectus',
+    width: 5
+  },
+  sevenDayCurrentYield: {
+    label: '7-day current (%)',
+    width: 10
+  },
+  sevenDayEffectiveYield: {
+    label: '7-day effective (%)',
+    width: 10
+  },
+  sevenDayPreWaiverYield: {
+    label: '7-day current pre-waiver (%)',
+    width: 10
+  },
+  shareClassName: {
+    label: 'Share class'
+  },
+  summaryProspectus: {
+    label: 'Summary prospectus',
+    width: 5
+  },
+  taNumber: {
+    label: 'Fund #'
+  },
+  thirtyDayCurrentYield: {
+    label: '30-day current (%)',
+    width: 10
+  },
+  thirtyDayEffectiveYield: {
+    label: '30-day effective (%)',
+    width: 10
+  },
+  thirtyDaySECYield: {
+    label: '30-day SEC yield (%)',
+    width: 10
+  },
+  ticker: {
+    label: 'Ticker'
+  },
+  tradingDeadlines: {
+    label: 'Trading deadline(s) (All Times ET)',
+    width: 25
+  },
+  weightedAverageMaturity: {
+    label: 'Weighted average maturity'
+  },
+  dailyNAV: {
+    label: 'NAV',
+    width: 5
+  },
+  averageEffectiveDuration: {
+    label: 'Effective duration'
+  },
+  // Returns
+  monthlyOneYearCumulative: {
+    label: '1 yr.'
+  },
+  monthlyFiveYearAnnualized: {
+    label: '5 yr.'
+  },
+  monthlyTenYearAnnualized: {
+    label: '10yr.'
+  },
+  monthlySinceInception: {
+    label: 'Incept.'
+  }
+}
+
+/* ================================================== start Component ================================================== */
+export default function RateReport1 (props: IProps) {
+  //
+  /// Define state
+  const [stateError, setStateError] = React.useState(null)
+  const [stateReportSections, setStateReportSections] = React.useState(null)
+
+  //
+  /// Local variable refs
+  const asOfDateRef = React.useRef('')
+  const totalReturnsAsOfDateRef = React.useRef('')
+  const tablesDataRef = React.useRef<any[]>([])
+
+  React.useEffect(() => {
+    fetchAndProcessData(props.id).then(processedData => {
+      const [rateReportSections, tablesData, asOfDate, totalReturnsAsOfDate, error] = processedData
+      asOfDateRef.current = asOfDate
+      totalReturnsAsOfDateRef.current = totalReturnsAsOfDate
+      tablesDataRef.current = tablesData
+      setStateReportSections(rateReportSections)
+      setStateError(error)
+    })
+  }, [props.id])
+
+  React.useEffect(() => {
+    helpers.antiClickjack()
+  }, [])
+
+  if (stateError) {
+    return (<h3>Error {stateError.message}</h3>)
+  } // else...
+  if (!stateReportSections || !tablesDataRef) {
+    return (<div className="spinner-container"><p className="fas fa-circle-notch fa-spin fa-3x"></p></div>)
+  } // else..
+
+  return (
+    <>
+    {stateReportSections.map(section => {
+      let description = <></>
+      if (section.description) {
+        description = <div dangerouslySetInnerHTML={{ __html: section.description }} />
+      }
+      return (
+      <>
+        <h2>{section.title} <span>as of {asOfDateRef.current}</span></h2>
+        {description}
+        {
+          section.tables.map((sectionTable:any/* :ISectionTable */) => {
+            return renderTable(sectionTable, tablesDataRef, totalReturnsAsOfDateRef)
+          })
+        }
+      </>
+      )
+    })}
+    </>
+  )
+}
+/* ==================================================  end Component  ================================================== */
+
+//
+/// Helpers
+async function fetchAndProcessData (reportId:string) {
+  let error = null
+  const rateReportsUrl = `${endpoints.rateReports}` // ${reportId === 'rate-sheet-ultra-short' ? '&reportName=RATE_REPORT' : ''}`
+  const rawRateReportData = await fetch(rateReportsUrl).then(resp => resp.json()).catch(err => { error = err })
+  if (error) {
+    return [null, null, null, null, error]
+  }
+  // else...
+  const [rateReportSections, rawTaNumbers] = getRateReportSections(rawRateReportData, reportId)
+  const historicalDataUrl = `${endpoints.historicalYields}${rawTaNumbers.join(',')}`
+  const rawHistoricalData = await fetch(historicalDataUrl).then(resp => resp.json()).catch(err => { error = err })
+  if (error) {
+    return [null, null, null, null, error]
+  }
+  // else...
+  const rawHistoricalYieldData = rawHistoricalData.HistoricalData.HistoricalYieldData
+  const [tableHistoricalYieldData, asOfDate, totalReturnsAsOfDate] = getTablesData(rawHistoricalYieldData)
+
+  return [rateReportSections, tableHistoricalYieldData, asOfDate, totalReturnsAsOfDate, error]
+}
+function getRateReportSections (rawRateReportData:object, reportId:string) {
+  const rawTaNumbers:number[] = []
+  let processedRateReportSections:any[]/* :ISection[] */ = get(rawRateReportData, 'sections', [])
+  processedRateReportSections = processedRateReportSections.map((rawReportSection:any/* :ISection */) => {
+    return {
+      title: get(rawReportSection, 'caption', ''), // <*>
+      description: get(rawReportSection, 'description', ''),
+      tables: getTables(get(rawReportSection, 'rows', []) /* as IRawSectionTable[] */, rawTaNumbers, reportId) /* as ISectionTable[] */ // <*>
+    } /* as ISection */
+  })
+
+  return [processedRateReportSections, rawTaNumbers]
+}
+function getTables (rawReportTables /*: IRawSectionTable[] */, rawTaNumbers /*: number[] */, reportId:string):any/* :ISectionTable */[] {
+  const sectionTables:any/* :ISectionTable */[] = rawReportTables.map(rawReportTable => {
+    return {
+      type: get(rawReportTable, 'type', _tableTypeByPageId[reportId]), // *Hardcoded value if original table-type is missing
+      caption: get(rawReportTable, 'caption', ''),
+      summary: get(rawReportTable, 'summary', ''),
+      rows: get(rawReportTable, 'rows', []).map((rawRow) => {
+        const rawFund = get(rawRow, 'historicalData.Fund', {})
+        const rawShareClassId = get(rawRow, 'shareClass', '')
+        const rawFundName = get(rawFund, 'FundName', '')
+        const shareClassDetails = getShareClassDetails(rawFund, rawShareClassId)
+        const rawFundTaNumber = get(shareClassDetails, 'TaNumber', '')
+        const tmpDocuments = [{ metadata: { documentTypes: 'Fact Sheets' }, url: get(rawRow, 'factSheetUrls', [])[0] }] // *<*>
+        const rawDocuments = getDocuments(tmpDocuments) // *getDocuments(get(rawRow, 'factSheetUrls', []))
+        const rawShareClassName = get(_shareClassesLookup, rawShareClassId, '')
+        const fundShareClassName = `${rawFundName} - ${rawShareClassId}`
+        const rawCustomTradingDeadlines = get(rawRow, 'customTradingDeadlines', [])
+
+        /* I don't understand these three lines below. It must be a bug? Commenting it out for now.
+        if (!rawCustomTradingDeadlines.length) {
+          rawCustomTradingDeadlines = get(rawFund, 'Classes.FundClass', [])
+        }
+        */
+
+        rawTaNumbers.push(rawFundTaNumber)
+
+        const mergedObj = assign({
+          fundClassName: fundShareClassName,
+          shareClassId: rawShareClassId,
+          shareClassName: rawShareClassName,
+          taNumber: rawFundTaNumber,
+          cusip: get(shareClassDetails, 'CUSIP', ''),
+          ticker: get(shareClassDetails, 'Ticker', ''),
+          tradingDeadlines: formatTradingDeadlines(rawCustomTradingDeadlines)
+        }, rawDocuments) // adds document property/values to new object // <*>
+
+        return mergedObj /* as ISectionRow */
+      })
+    } /* as ISectionTable */
+  })
+  return sectionTables
+}
+function getTablesData (rawHistYieldData:object[]) {
+  const tableHistoricalYielData = {} /* as IYieldDataItem */
+  let parsedAsOfDate:string
+  let parsedTotalReturnsAsOfDate:string
+  rawHistYieldData.forEach(rawHistYieldDataItem => {
+    const rawTaNumber = get(rawHistYieldDataItem, 'TANumber', '') as number
+    const rawFundClassIndex = findIndex(get(rawHistYieldDataItem, 'Fund.Classes.FundClass', {}), { TaNumber: rawTaNumber }) as number
+    const rawDailyWeightedAverageMaturity = get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.DailyPricing.DailyWeightedAverageMaturity') as number
+    const parsedDailyWeightedAverageMaturity = rawDailyWeightedAverageMaturity ? rawDailyWeightedAverageMaturity + ' days' : '' as string
+
+    if (!parsedAsOfDate) {
+      parsedAsOfDate = get(rawHistYieldDataItem, 'Fund.@AsOfDate')
+    } else if (parsedAsOfDate !== get(rawHistYieldDataItem, 'Fund.@AsOfDate')) {
+      parsedAsOfDate = 'error'
+    }
+    if (!parsedTotalReturnsAsOfDate) {
+      parsedTotalReturnsAsOfDate = get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.Returns.@AsOfDate')
+    }
+
+    tableHistoricalYielData[rawTaNumber] = {
+      fundName: get(rawHistYieldDataItem, 'Fund.FundName', '') as string,
+      weightedAverageMaturity: parsedDailyWeightedAverageMaturity,
+      netFundAssets: _currencyFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.DailyPricing.DailyFundLevelNetAssets', '')
+      ) as string,
+      dailyFactor: _nineDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.DistributionData.DailyDistFactor', '')
+      ) as string,
+      oneDayYield: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.NonSECYields.OneDayYield', '')
+      ) as string,
+      sevenDayCurrentYield: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.NonSECYields.SevenDayCurrentYield', '')
+      ) as string,
+      sevenDayPreWaiverYield: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.NonSECYields.SevenDyPreWaiverYield', '')
+      ) as string,
+      sevenDayEffectiveYield: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.NonSECYields.SevenDayEffectiveYield', '')
+      ) as string,
+      thirtyDayCurrentYield: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.NonSECYields.ThirtyDayCurrentYield', '')
+      ) as string,
+      thirtyDayEffectiveYield: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.NonSECYields.ThirtyDayEffectiveYield', '')
+      ) as string,
+      thirtyDaySECYield: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.SECYields.ThirtyDaySECYield', '')
+      ) as string,
+      minInitialInvestment: _currencyFormatter.format(
+        get(rawHistYieldDataItem, `Fund.Classes.FundClass.${rawFundClassIndex}.AccountMinimum`, '')
+      ) as string,
+      grossExpenseRatio: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, `Fund.Classes.FundClass.${rawFundClassIndex}.GrossExpenseRatio.$`, '')
+      ) as string,
+      netExpenseRatio: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, `Fund.Classes.FundClass.${rawFundClassIndex}.NetExpenseRatio.$`, '')
+      ) as string,
+      averageEffectiveDuration: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'FundStats.AverageEffectiveDuration', '')
+      ) as string,
+      dailyNAV: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.DailyPricing.DailyNAV', '')
+      ) as string,
+      monthlyOneYearCumulative: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.Returns.MonthlyReturns.MonthlyOneYearCumulative.LoadWaived', '') // LoadWaived vs LoadApplied?
+      ) as string,
+      monthlyFiveYearAnnualized: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.Returns.MonthlyReturns.MonthlyFiveYearAnnualized.LoadWaived', '') // LoadWaived vs LoadApplied?
+      ) as string,
+      monthlyTenYearAnnualized: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.Returns.MonthlyReturns.MonthlyTenYearAnnualized.LoadWaived', '') // LoadWaived vs LoadApplied?
+      ) as string,
+      monthlySinceInception: _twoDecimalFormatter.format(
+        get(rawHistYieldDataItem, 'HistoricalYields.HistoricalItem.Returns.MonthlyReturns.MonthlySinceInception.LoadWaived', '') // LoadWaived vs LoadApplied?
+      ) as string
+    }
+  }) // end forEach
+
+  parsedAsOfDate =
+    !parsedAsOfDate || parsedAsOfDate === 'error'
+      ? '-' // '[an unexpected error has occurred]'
+      : format(parseISO(parsedAsOfDate), 'M-d-yy')
+  parsedTotalReturnsAsOfDate =
+    !parsedTotalReturnsAsOfDate || parsedTotalReturnsAsOfDate === 'error'
+      ? '-' // '[an unexpected error has occurred]'
+      : format(parseISO(parsedTotalReturnsAsOfDate), 'M-d-yy')
+
+  return [tableHistoricalYielData, parsedAsOfDate, parsedTotalReturnsAsOfDate]
+}
+function renderTableHeaderRow (type:string, totalReturnsAsOfDateRef:React.MutableRefObject<string>) {
+  return (
+    <tr>
+      {_tableTypes[type].map((key:string, index:number) => {
+        const className = _columns[key].width ? `w-${_columns[key].width}` : ''
+        if (key === 'monthlyOneYearCumulative') {
+          return <th key={index} className={className} scope="col" style={{ position: 'relative' }}>
+            <br/><br/>
+            {_columns[key].label}
+            <span style={{ position: 'absolute', left: 0, bottom: '45%', right: '-350%', textAlign: 'center', lineHeight: 1.25 }}>
+              Total Returns (%)<br/>as of {totalReturnsAsOfDateRef.current}
+            </span>
+          </th>
+        } else {
+          return <th key={index} className={className} scope="col">{_columns[key].label}</th>
+        }
+      })}
+    </tr>
+  )
+}
+function renderTableRow (type:string, yieldDataItem:any/*: IRawYieldDataItem */) {
+  return (
+    <tr>
+      {_tableTypes[type].map((key:string, index:number) => {
+        if (['factSheet', 'summaryProspectus', 'prospectus', 'annualReport'].indexOf(key) > -1) {
+          const url = yieldDataItem[key]
+          const name = yieldDataItem.fundClassName || yieldDataItem.shareClassName
+          return (
+            <td key={index}>
+              <a href={url} target="_blank" aria-label={`View ${_columns[key].label} of ${name} (PDF)`} rel="noreferrer">
+                <span aria-hidden="true" className="far fa-file-pdf fa-lg"></span>
+              </a>
+            </td>
+          )
+        } else {
+          return <td key={index}>{yieldDataItem[key]}</td>
+        }
+      })}
+    </tr>
+  )
+}
+function renderTable (sectionTable:any/* :ISectionTable */, tablesDataRef:React.MutableRefObject<any[]>, totalReturnsAsOfDateRef:React.MutableRefObject<string>) {
+  let netFundAssetsStr = ''
+  const processedRows = sectionTable.rows.map(sectionTableRow => {
+    const rowYieldData = get(tablesDataRef.current, get(sectionTableRow, 'taNumber')) // as IYieldDataItem
+    netFundAssetsStr = get(rowYieldData, 'netFundAssets') as string
+    const mergedObj = assign({ }, sectionTableRow, rowYieldData) as any /* IRawYieldDataItem */
+
+    return renderTableRow(sectionTable.type, mergedObj)
+  }) // end map()
+
+  return (
+    <div className="table-responsive">
+      <table className="table table-sm">
+        <caption>
+          <h3 className="h4">
+            {sectionTable.caption} {renderNetFundAssets(sectionTable, netFundAssetsStr)}
+          </h3>
+        </caption>
+        <thead>
+          {renderTableHeaderRow(sectionTable.type, totalReturnsAsOfDateRef)}
+        </thead>
+        <tbody>
+          {processedRows}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+function renderNetFundAssets (sectionTable:any/* :ISectionTable */, netFundAssets:string) {
+  if (sectionTable.type === 'stagecoach-sweep') {
+    return <></>
+  }
+  return <span className="h5">(Net fund assets: {netFundAssets})</span>
+}
+function getShareClassDetails (fund:object, shareClass:string):object {
+  const shareClasses = get(fund, 'Classes.FundClass', [])
+
+  return find(shareClasses, { FundClassName: shareClass })
+}
+function getDocuments (documents:object[]):object {
+  const factSheet = find(documents, document => get(document, 'metadata.documentTypes') === 'Fact Sheets')
+  const summaryProspectus = find(documents, document => get(document, 'metadata.documentTypes') === 'Summary prospectus')
+  const prospectus = find(documents, document => get(document, 'metadata.documentTypes') === 'Full prospectus')
+  const annualReport = find(documents, document => get(document, 'metadata.documentTypes') === 'Annual Report')
+
+  return {
+    factSheet: get(factSheet, 'url'),
+    summaryProspectus: get(summaryProspectus, 'url'),
+    prospectus: get(prospectus, 'url'),
+    annualReport: get(annualReport, 'url')
+  }
+}
+function formatTradingDeadlines (tradingDeadlines:string[]):string {
+  tradingDeadlines.sort((a, b) => a.localeCompare(b)) // sort asc
+  return tradingDeadlines.join('/')
+
+  // const mappedTradingDeadlines = tradingDeadlines.map(Number).sort((a, b) => a - b) as number[]
+  // const result:string[] = mappedTradingDeadlines.map(deadline => {
+  //   if (deadline > 1259 && deadline <= 2359) {
+  //     const time = '' + (deadline - 1200)
+  //     return `${time.slice(0, -2)}:${time.slice(-2)} p.m.`
+  //   } else if (deadline < 1200 && deadline >= 100) {
+  //     const time = '' + deadline
+  //     return `${time.slice(0, -2)}:${time.slice(-2)} a.m.`
+  //   } else if (deadline >= 0 && deadline < 1300) {
+  //     const time = '' + deadline
+  //     return `12:${time.slice(-2)} ${deadline < 100 ? 'a.m.' : 'p.m.'}`
+  //   } else {
+  //     return ''
+  //   }
+  // })
+  // return compact(result).join('/')
+}

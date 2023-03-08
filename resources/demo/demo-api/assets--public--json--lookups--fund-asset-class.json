@@ -1,0 +1,18 @@
+{
+  "alternative": "Alternative",
+  "fixed-income": "Fixed income",
+  "government": "Government",
+  "international-global-equity": "International and global equity",
+  "money-market": "Money market",
+  "multi-asset": "Multi-asset",
+  "municipal-fixed-income": "Municipal fixed income",
+  "municipal-institutional": "Municipal institutional",
+  "prime-institutional": "Prime institutional",
+  "specialty": "Specialty",
+  "target-date-retirement": "Target date retirement",
+  "taxable-fixed-income": "Taxable fixed income",
+  "us-equity": "U.S. equity",
+  "us-equity-blend": "U.S. equity - Blend",
+  "us-equity-growth": "U.S. equity - Growth",
+  "us-equity-value": "U.S. equity - Value"
+}
